@@ -2,7 +2,7 @@
 
 always #10 clk = ~clk;
 
-module axiProtocol_tb();
+module axiProtocol_tb;
 
     reg  rst;
     reg  clk;
@@ -29,6 +29,9 @@ module axiProtocol_tb();
 	wire [11:0] AWOUT;
 	wire [7:0] WDATA;
 	wire [4:0] BOUT;
+
+Master DUT (.rst(rst), .clk(clk), .en(en), .en_(en_), .LAST(LAST), .ARADDR(ARADDR), .ARLEN(ARLEN), .ARID(ARID), .AWADDR(AWADDR), .AWID(AWID), .INDATA(INDATA), 
+.ARVALID(ARVALID), .RREADY(RREADY), .OUT(OUT), .RRESP(RRESP), .RDATA(RDATA), .AWVALID(AWVALID), .WVALID(WVALID), .WLAST(WLAST), .BREADY(BREADY), .AWOUT(AWOUT), .WDATA(WDATA), .BOUT(BOUT)) 
 
 initial
 begin
