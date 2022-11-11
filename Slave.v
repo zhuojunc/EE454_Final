@@ -15,12 +15,12 @@ module Slave
 	input  BREADY,
     output reg ARREADY,
     output reg RVALID,
-	output reg RLAST
+	output reg RLAST,
     output reg [8:0] OUT,
 	output reg AWREADY,
 	output reg WREADY,
 	output reg BVALID,
-	output reg [4:0] BRESP,
+	output reg [4:0] BRESP
 );
 
 	reg [3:0] ARLEN = 4'b0000;

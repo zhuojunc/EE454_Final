@@ -1,11 +1,11 @@
 `timescale 1ns / 1ps
 
-always #10 clk = ~clk;
-
 module axiProtocol_tb;
+	reg clk;
+    always #10 clk = ~clk;
+
 
     reg  rst;
-    reg  clk;
 	reg  en;
 	reg en_;
 	reg  LAST;
@@ -39,11 +39,11 @@ module axiProtocol_tb;
 	wire [4:0] BOUT;
 
 
-Master DUT (.rst(rst), .clk(clk), .en(en), .en_(en_), .LAST(LAST), .ARADDR(ARADDR), .ARLEN(ARLEN), .ARID(ARID), .AWADDR(AWADDR), .AWID(AWID), .INDATA(INDATA), 
-.ARREADY(ARREADY), .RVALID(RVALID), .RLAST(RLAST), .AWREADY(AWREADY), .WREADY(WREADY), .BVALID(BVALID), .BRESP(BRESP)
+Master DUT(.rst(rst), .clk(clk), .en(en), .en_(en_), .LAST(LAST), .ARADDR(ARADDR), .ARLEN(ARLEN), .ARID(ARID), .AWADDR(AWADDR), .AWID(AWID), .INDATA(INDATA), 
+.ARREADY(ARREADY), .RVALID(RVALID), .RLAST(RLAST), .AWREADY(AWREADY), .WREADY(WREADY), .BVALID(BVALID), .BRESP(BRESP),
 .ARVALID(ARVALID), .RREADY(RREADY), .OUT(OUT), .RRESP(RRESP), .RDATA(RDATA), .AWVALID(AWVALID), .WVALID(WVALID), .WLAST(WLAST), .BREADY(BREADY), .AWOUT(AWOUT), .WDATA(WDATA), .BOUT(BOUT));
 
-Slave DUT (.rst(rst), .clk(clk), .ARVALID(ARVALID), .RREADY(RREADY), .IN(IN), .AWVALID(AWVALID), .WVALID(WVALID), .WLAST(WLAST), .AWIN(AWIN), .WDATA(WDATA), .BREADY(BREADY),
+Slave UUT(.rst(rst), .clk(clk), .ARVALID(ARVALID), .RREADY(RREADY), .IN(IN), .AWVALID(AWVALID), .WVALID(WVALID), .WLAST(WLAST), .AWIN(AWIN), .WDATA(WDATA), .BREADY(BREADY),
 .ARREADY(ARREADY), .RVALID(RVALID), .RLAST(RLAST), .OUT(OUT), .AWREADY(AWREADY), .WREADY(WREADY), .BVALID(BVALID), .BRESP(BRESP));
 
 initial
@@ -85,9 +85,9 @@ begin
 
         // third data
         #200
-        INDATA = 1;
-        AWADDR = 1;
-        LAST = 1
+        INDATA = 3;
+        AWADDR = 3;
+        LAST = 1;
         en_ = 1;
         #20 
         en_ = 0;

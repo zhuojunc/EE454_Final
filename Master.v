@@ -32,7 +32,7 @@ module Master
 	output reg BREADY,
 	output reg [11:0] AWOUT,
 	output reg [7:0] WDATA,
-	output reg [4:0] BOUT,
+	output reg [4:0] BOUT
 );
 
 	reg [1:0] next_state = 2'b00;
@@ -40,9 +40,10 @@ module Master
 	reg [2:0] next_state_ = 3'b000;
 	reg [2:0] current_state_ = 3'b000;
 	
-	assign WLAST = LAST;
-	assign WDATA = INDATA;
-	
+always @* begin
+   		WLAST <= LAST;
+		WDATA <= INDATA;
+	end
 	always@(posedge clk or posedge rst) begin
 		if (rst) begin		
 			next_state <= 0;			
