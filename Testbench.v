@@ -1,5 +1,7 @@
 `timescale 1ns / 1ps
 
+always #10 clk = ~clk;
+
 module axiProtocol_tb();
 
     reg  rst;
@@ -30,7 +32,21 @@ module axiProtocol_tb();
 
 initial
 begin
+    //  initialize everything input to zero
+    rst = 0;
+    clk = 0;
+    en = 0;
+    en_ = 0;
+    LAST = 0;
+    ARADDR = 0;
+    ARLEN = 0;
+    ARID = 0;
+    IN = 0;
+    AWADDR = 0;
+    INDATA = 0;
 
+    // test case 1 ()
+    
 end
 
 
