@@ -45,9 +45,64 @@ begin
     AWADDR = 0;
     INDATA = 0;
 
-    // test case 1 ()
-    
-end
+    // test case 1 (write 3 data)
+    rst = 1;
+    #20
+    rst = 0;
 
+        AWID = 1;
+        // first data
+        #10
+        INDATA = 1;
+        AWADDR = 1;
+        en_ = 1;
+        #20 
+        en_ = 0;
+
+        // second data
+        #200
+        INDATA = 2;
+        AWADDR = 2;
+        en_ = 1;
+        #20 
+        en_ = 0;
+
+        // third data
+        #200
+        INDATA = 1;
+        AWADDR = 1;
+        LAST = 1
+        en_ = 1;
+        #20 
+        en_ = 0;
+
+    // test case 2 (read 3 data)
+    rst = 1;
+    #20
+    rst = 0;
+
+        ARID = 1;
+        ARLEN = 3;
+        // read from address 1
+        #10
+        ARADDR = 1;
+        en = 1;
+        #20 
+        en = 0;
+
+        // read from address 2
+        #200
+        ARADDR = 2;
+        en = 1;
+        #20 
+        en = 0;
+
+        // read from address 2
+        #200
+        ARADDR = 3;
+        en = 1;
+        #20 
+        en = 0;
+end
 
 endmodule
