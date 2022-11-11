@@ -91,21 +91,29 @@ module Slave
 			
 				0: begin
 					if (AWVALID)
+						$display ("\n Going to next_state 1");
+
 						next_state_ <= 1;
 				end
 				
 				1: begin
 					if (!AWVALID && WVALID)
+						$display ("\n Going to next_state 2");
+
 						next_state_ <= 2;
 				end
 				
 				2: begin
 					if (WLAST)
+						$display ("\n Going to next_state 3");
+
 						next_state_ <= 3;
 				end
 				
 				3: begin
 					if (BREADY)
+						$display ("\n Going to next_state 0");
+
 						next_state_ <= 0;
 				end
 				
