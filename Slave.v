@@ -109,7 +109,6 @@ module Slave
 				2: begin
 					if (WLAST) begin
 						$display ("\n Going to next_state 3");
-
 						next_state_ <= 3;
 					end
 				end
@@ -152,8 +151,10 @@ module Slave
 				AWREADY <= 0;
 				WREADY <= 1;
 				if (WVALID) begin
-					if (WADDR <= 255)
+					if (WADDR <= 255) begin
+						$display ("\n Adding data %d to address %d", WDATA, WADDR);
 						mem[WADDR] <= WDATA;
+					end
 					else
 						RESP <= 1;
 					WADDR <= WADDR + 1;
@@ -161,9 +162,6 @@ module Slave
 			end
 			
 			3: begin
-				$display ("\n Memory Address 1: %d", mem[1]);
-				$display ("\n Memory Address 2: %d", mem[2]);
-				$display ("\n Memory Address 3: %d", mem[3]);
 				BVALID <= 1;
 				BRESP <= {RESP, BID};
 			end
@@ -198,11 +196,14 @@ module Slave
 					RVALID = 1;
 					if (RREADY) begin
 						count <= count + 1;
+						$display(" ARLEN is %d", ARLEN);
 						if (count + 1 == ARLEN)
 							RLAST = 1;
 						
-						if (RADDR + count <= 255)
+						if (RADDR + count <= 255) begin
+							$display(" The RADDR is %d, and the count is %d", RADDR, count);
 							OUT <= {mem[RADDR+count], 1'b0};
+						end
 						else
 							OUT <= {8'b00000000, 1'b1};
 					end
