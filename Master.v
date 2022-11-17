@@ -171,9 +171,10 @@ module Master
 				end
 				
 				BREADY <= 1;
-				if (BVALID)
+				if (BVALID) begin
 					// WVALID <= 0;
 					BOUT <= BRESP;
+				end
 			end
 		
 		endcase
