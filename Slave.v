@@ -68,7 +68,7 @@ module Slave
 				end
 				
 				2: begin
-					if (count + 1 == ARLEN)
+					if (count == ARLEN)
 						next_state <= 0;
 				end
 								
@@ -162,7 +162,7 @@ module Slave
 			end
 			
 			3: begin
-				/* if (WVALID) begin
+/* 				if (WVALID) begin
 					if (WADDR <= 255) begin
 						$display ("\n Adding data %d to address %d", WDATA, WADDR);
 						mem[WADDR] <= WDATA;
@@ -196,7 +196,7 @@ module Slave
 				RID <= IN[3:0];
 				ARLEN <= IN[7:4];
 				RADDR <= IN[15:8];
-			end
+			end 
 			
 			2: begin
 				ARREADY <= 0;
@@ -205,8 +205,8 @@ module Slave
 					if (RREADY) begin
 						count <= count + 1;
 						$display(" ARLEN is %d", ARLEN);
-						if (count + 1 == ARLEN)
-							RLAST = 1;
+						if (count == ARLEN)
+							RLAST <= 1;
 						
 						if (RADDR + count <= 255) begin
 							$display(" The RADDR is %d, and the count is %d", RADDR, count);
