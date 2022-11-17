@@ -162,6 +162,14 @@ module Slave
 			end
 			
 			3: begin
+				/* if (WVALID) begin
+					if (WADDR <= 255) begin
+						$display ("\n Adding data %d to address %d", WDATA, WADDR);
+						mem[WADDR] <= WDATA;
+					end
+					else
+						RESP <= 1;
+				end */
 				BVALID <= 1;
 				BRESP <= {RESP, BID};
 			end
