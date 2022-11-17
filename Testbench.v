@@ -55,12 +55,14 @@ begin
     clk = 0;
     en = 0;
     en_ = 0;
-    LAST = 0;
-    ARADDR = 0;
-    ARLEN = 0;
-    ARID = 0;
-    AWADDR = 0;
+    // LAST = 0;
+    // ARADDR = 0;
+    // ARLEN = 0;
+    // ARID = 0;
+    // AWADDR = 0;
     INDATA = 0;
+    tb_R = 0;
+    tb_W = 0;
 
     // test case 1 (write 3 data)
     rst = 1;
