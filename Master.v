@@ -172,6 +172,7 @@ module Master
 				
 				BREADY <= 1;
 				if (BVALID)
+					// WVALID <= 0;
 					BOUT <= BRESP;
 			end
 		
