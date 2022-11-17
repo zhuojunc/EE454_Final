@@ -91,7 +91,7 @@ module Slave
 			
 				0: begin
 					if (AWVALID) begin
-						$display ("\n Going to next_state 1");
+						// $display ("\n Going to next_state 1");
 
 						next_state_ <= 1;
 					end
@@ -99,7 +99,7 @@ module Slave
 				
 				1: begin
 					if (!AWVALID && WVALID) begin
-						$display ("\n Going to next_state 2");
+						// $display ("\n Going to next_state 2");
 
 						next_state_ <= 2;
 					end
@@ -107,7 +107,7 @@ module Slave
 				
 				2: begin
 					if (WLAST) begin
-						$display ("\n Going to next_state 3");
+						// $display ("\n Going to next_state 3");
 
 						next_state_ <= 3;
 					end
@@ -115,7 +115,7 @@ module Slave
 				
 				3: begin
 					if (BREADY) begin
-						$display ("\n Going to next_state 0");
+						// $display ("\n Going to next_state 0");
 
 						next_state_ <= 0;
 					end
@@ -160,6 +160,7 @@ module Slave
 			end
 			
 			3: begin
+				WREADY <= 0;
 				BVALID <= 1;
 				BRESP <= {RESP, BID};
 			end
