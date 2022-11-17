@@ -37,11 +37,12 @@ module Slave
 	reg [2:0] current_state_ = 3'b000;
 	
 	reg [7:0] mem [0:255];
+//	reg [7:0] mem = 0;
 	
 	integer i;
 	initial begin
 	    for (i = 0; i < 256; i = i + 1) begin
-			mem[i] = 0;
+			mem[i] <= 0;
 		end		
 	end
 	
@@ -91,7 +92,7 @@ module Slave
 			
 				0: begin
 					if (AWVALID) begin
-						// $display ("\n Going to next_state 1");
+						$display ("\n Going to next_state 1");
 
 						next_state_ <= 1;
 					end
@@ -99,7 +100,7 @@ module Slave
 				
 				1: begin
 					if (!AWVALID && WVALID) begin
-						// $display ("\n Going to next_state 2");
+						$display ("\n Going to next_state 2");
 
 						next_state_ <= 2;
 					end
@@ -107,7 +108,7 @@ module Slave
 				
 				2: begin
 					if (WLAST) begin
-						// $display ("\n Going to next_state 3");
+						$display ("\n Going to next_state 3");
 
 						next_state_ <= 3;
 					end
@@ -115,7 +116,7 @@ module Slave
 				
 				3: begin
 					if (BREADY) begin
-						// $display ("\n Going to next_state 0");
+						$display ("\n Going to next_state 0");
 
 						next_state_ <= 0;
 					end
@@ -138,7 +139,7 @@ module Slave
 				BRESP <= 0;
 				RESP = 1'b0;
 				BID = 4'b0000;
-				WADDR = 9'b000000000;				
+				WADDR = 9'b000000000;					
 			end
 			
 			1: begin
@@ -160,7 +161,9 @@ module Slave
 			end
 			
 			3: begin
-				WREADY <= 0;
+				$display ("\n Memory Address 1: %d", mem[1]);
+				$display ("\n Memory Address 2: %d", mem[2]);
+				$display ("\n Memory Address 3: %d", mem[3]);
 				BVALID <= 1;
 				BRESP <= {RESP, BID};
 			end
@@ -179,7 +182,7 @@ module Slave
 				ARLEN = 4'b0000;
 				RADDR = 8'b00000000;
 				OUT <= 0;
-				count <= 0;			
+				count <= 0;		
 			end
 			
 			1: begin
