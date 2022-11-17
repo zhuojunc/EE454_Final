@@ -6,14 +6,17 @@ module Master
     input  clk,
 	input  en,
 	input en_,
-	input  LAST,	
-	input [7:0] ARADDR,
-	input [3:0] ARLEN,
-	input [3:0] ARID,
+	// input  LAST,
+	input [15:0] tb_R // tb_R[15:8] ARADDR, tb_R[7:4] ARLEN, tb_R[3:0] ARID
+	// input [7:0] ARADDR,
+	// input [3:0] ARLEN,
+	// input [3:0] ARID,
     input [8:0] IN,
-	input [7:0] AWADDR,
-	input [3:0] AWID,
-	input [7:0] INDATA,
+	input [15:0] tb_W // tb_W[15:8] AWADDR, tb_W[7:4] AWLEN, tb_W[3:0] AWID
+	// input [7:0] AWADDR,
+	// input [3:0] AWID,
+	input [127:0] INDATA // max 16 data bytes
+	// input [7:0] INDATA,
 	input  ARREADY,
 	input  RVALID,
 	input  RLAST,
@@ -40,10 +43,14 @@ module Master
 	reg [2:0] next_state_ = 3'b000;
 	reg [2:0] current_state_ = 3'b000;
 	
-always @* begin
+	// Current write number
+	reg [3:0] count = 4'b0000;
+	
+/* 	always @* begin
    		WLAST <= LAST;
-		WDATA <= INDATA;
-	end
+		WDATA <= INDATA;	
+	end */
+	
 	always@(posedge clk or posedge rst) begin
 		if (rst) begin		
 			next_state <= 0;			
@@ -128,22 +135,34 @@ always @* begin
 				BREADY <= 0;
 				AWOUT <= 0;
 				BOUT <= 0;
+				WLAST <= 0;
+				WDATA <= 0;
+				count <= 0;
 			end
 			
 			1: begin
 				AWVALID <= 1;
-				AWOUT <= {AWADDR, AWID};
+				// AWOUT <= {AWADDR, AWID};
+				AWOUT <= {tb_W[15:8], tb_W[3:0]};
 			end
 			
 			2: begin
 				AWVALID <= 0;
 				WVALID <= 1;
-				WDATA <= INDATA;
+				// WDATA <= INDATA;
+				WDATA <= INDATA[count * 8 + 7 : count * 8];
+				WLAST <= count == tb_W[7:4] ? 1 : 0; // tb_W[7:4]==0 -> 1 data byte
+				count <= count + 1;
 			end
 			
 			3: begin
-				if (WREADY)
-					WDATA <= INDATA;
+				if (WREADY) begin
+					// WDATA <= INDATA;
+					WDATA <= INDATA[count * 8 + 7 : count * 8];
+					WLAST <= count == tb_W[7:4] ? 1 : 0; // tb_W[7:4]==0 -> 1 data byte
+					count <= count + 1;
+				end
+				
 				BREADY <= 1;
 				if (BVALID)
 					BOUT <= BRESP;
@@ -165,7 +184,7 @@ always @* begin
 			
 			1: begin
 				ARVALID <= 1;
-				OUT <= {ARADDR, ARLEN, ARID};
+				OUT <= tb_R;
 			end
 			
 			2: begin
