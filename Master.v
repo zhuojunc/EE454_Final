@@ -42,6 +42,9 @@ module Master
 	reg [1:0] current_state = 2'b00;
 	reg [2:0] next_state_ = 3'b000;
 	reg [2:0] current_state_ = 3'b000;
+	integer start = 0;
+//	reg [127:0] start = 0;
+//	reg [127:0] end = 0;
 	
 	// Current write number
 	reg [3:0] count = 4'b0000;
@@ -150,7 +153,9 @@ module Master
 				AWVALID <= 0;
 				WVALID <= 1;
 				// WDATA <= INDATA;
-				WDATA <= INDATA[count * 8 + 7 : count * 8];
+				start = count * 8 + 7;
+				//end = count * 8;
+				WDATA <= INDATA[start +: 8];
 				WLAST <= count == tb_W[7:4] ? 1 : 0; // tb_W[7:4]==0 -> 1 data byte
 				count <= count + 1;
 			end
@@ -158,7 +163,9 @@ module Master
 			3: begin
 				if (WREADY) begin
 					// WDATA <= INDATA;
-					WDATA <= INDATA[count * 8 + 7 : count * 8];
+					start = count * 8 + 7;
+					//end = count * 8;
+					WDATA <= INDATA[start +: 8];
 					WLAST <= count == tb_W[7:4] ? 1 : 0; // tb_W[7:4]==0 -> 1 data byte
 					count <= count + 1;
 				end
