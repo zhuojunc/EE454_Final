@@ -8,13 +8,15 @@ module axiProtocol_tb;
     reg  rst;
 	reg  en;
 	reg en_;
-	reg  LAST;
-	reg [7:0] ARADDR;
-	reg [3:0] ARLEN;
-	reg [3:0] ARID;
-	reg [7:0] AWADDR;
-	reg [3:0] AWID;
-	reg [7:0] INDATA;
+	// reg LAST;
+	// reg [7:0] ARADDR;
+	// reg [3:0] ARLEN;
+	// reg [3:0] ARID;
+	// reg [7:0] AWADDR;
+	// reg [3:0] AWID;
+	reg [127:0] INDATA;
+    reg [15:0] tb_R;
+    reg [15:0] tb_W;
 
     wire ARREADY;
 	wire RVALID;
@@ -39,7 +41,7 @@ module axiProtocol_tb;
 	wire [4:0] BOUT;
 
 
-Master DUT(.rst(rst), .clk(clk), .en(en), .en_(en_), .LAST(LAST), .ARADDR(ARADDR), .ARLEN(ARLEN), .ARID(ARID), .IN(SOUT), .AWADDR(AWADDR), .AWID(AWID), .INDATA(INDATA), 
+Master DUT(.rst(rst), .clk(clk), .en(en), .en_(en_), .tb_R(tb_R), .IN(SOUT), .tb_W(tb_W), .INDATA(INDATA), 
 .ARREADY(ARREADY), .RVALID(RVALID), .RLAST(RLAST), .AWREADY(AWREADY), .WREADY(WREADY), .BVALID(BVALID), .BRESP(BRESP),
 .ARVALID(ARVALID), .RREADY(RREADY), .OUT(MOUT), .RRESP(RRESP), .RDATA(RDATA), .AWVALID(AWVALID), .WVALID(WVALID), .WLAST(WLAST), .BREADY(BREADY), .AWOUT(AWOUT), .WDATA(WDATA), .BOUT(BOUT));
 
@@ -65,59 +67,36 @@ begin
     #20
     rst = 0;
 
-        AWID = 1;
-        // first data
+        // BURST WRITE
         #10
-        INDATA = 1;
-        AWADDR = 1;
+        INDATA[0:7] = 8'b00000001;
+        INDATA[8:15] = 8'b00000010;
+        INDATA[16:23] = 8'b00000011;
+        tb_W[15:8] = 8'b00000001;
+        tb_W[7:4] = 3'b011;
+        tb_W[3:0] = 3'b001;
+
         en_ = 1;
         #20 
         en_ = 0;
 
-        // second data
-        #200
-        INDATA = 2;
-        AWADDR = 2;
-        en_ = 1;
-        #20 
-        en_ = 0;
 
-        // third data
-        #200
-        INDATA = 3;
-        AWADDR = 3;
-        LAST = 1;
-        en_ = 1;
-        #20 
-        en_ = 0;
 
     // test case 2 (read 3 data)
     rst = 1;
     #20
     rst = 0;
 
-        ARID = 1;
-        ARLEN = 3;
-        // read from address 1
+        // BURST READ
         #10
-        ARADDR = 1;
+        tb_R[15:8] = 8'b00000001;
+        tb_R[7:4] = 3'b011;
+        tb_R[3:0] 3'b001;
         en = 1;
         #20 
         en = 0;
 
-        // read from address 2
-        #200
-        ARADDR = 2;
-        en = 1;
-        #20 
-        en = 0;
 
-        // read from address 2
-        #200
-        ARADDR = 3;
-        en = 1;
-        #20 
-        en = 0;
 end
 
 endmodule

@@ -7,15 +7,15 @@ module Master
 	input  en,
 	input en_,
 	// input  LAST,
-	input [15:0] tb_R // tb_R[15:8] ARADDR, tb_R[7:4] ARLEN, tb_R[3:0] ARID
+	input [15:0] tb_R, // tb_R[15:8] ARADDR, tb_R[7:4] ARLEN, tb_R[3:0] ARID
 	// input [7:0] ARADDR,
 	// input [3:0] ARLEN,
 	// input [3:0] ARID,
     input [8:0] IN,
-	input [15:0] tb_W // tb_W[15:8] AWADDR, tb_W[7:4] AWLEN, tb_W[3:0] AWID
+	input [15:0] tb_W, // tb_W[15:8] AWADDR, tb_W[7:4] AWLEN, tb_W[3:0] AWID
 	// input [7:0] AWADDR,
 	// input [3:0] AWID,
-	input [127:0] INDATA // max 16 data bytes
+	input [127:0] INDATA, // max 16 data bytes
 	// input [7:0] INDATA,
 	input  ARREADY,
 	input  RVALID,
