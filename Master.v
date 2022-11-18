@@ -156,10 +156,10 @@ module Master
 				start <= count * 8;
 				//end = count * 8;
 				WDATA <= INDATA[start +: 8];
-				// WLAST <= count == tb_W[7:4] ? 1 : 0; // tb_W[7:4]==0 -> 1 data byte
-				// if (tb_W[7:4]) begin
-				count <= count + 1;
-				//end
+
+				if (tb_W[7:4] || count != 1) begin
+					count <= count + 1;
+				end
 				
 				if (WLAST) begin
 					WVALID <= 0;
@@ -171,7 +171,6 @@ module Master
 					if (tb_W[7:4]) begin
 						start <= count * 8;
 						WDATA <= INDATA[start +: 8];
-						// WLAST <= count == tb_W[7:4] ? 1 : 0; // tb_W[7:4]==0 -> 1 data byte
 						count <= count + 1;
 					end
 				end
@@ -182,7 +181,6 @@ module Master
 				
 				BREADY <= 1;
 				if (BVALID) begin
-					// WVALID <= 0;
 					BOUT <= BRESP;
 				end
 			end
