@@ -210,6 +210,7 @@ module Master
 				if (RVALID) begin
 					RRESP <= IN[0];
 					RDATA <= IN[8:1];
+					$display("RDATA is given the value %d", IN[8:1]);
 				end
 			end
 			
@@ -217,6 +218,7 @@ module Master
 				if (RVALID) begin
 					RRESP <= IN[0];
 					RDATA <= IN[8:1];
+					$display("RDATA is given the value %d", IN[8:1]);
 				end	
 			end
 			
