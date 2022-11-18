@@ -47,7 +47,7 @@ module Master
 //	reg [127:0] end = 0;
 	
 	// Current write number
-	reg [3:0] count = 4'b0000;
+	reg [4:0] count = 5'h0;
 	
 /* 	always @* begin
    		WLAST <= LAST;
@@ -140,7 +140,7 @@ module Master
 				BOUT <= 0;
 				WLAST <= 0;
 				WDATA <= 0;
-				count <= 0;
+				count <= 5'h0;
 			end
 			
 			1: begin
@@ -157,8 +157,12 @@ module Master
 				//end = count * 8;
 				WDATA <= INDATA[start +: 8];
 				// WLAST <= count == tb_W[7:4] ? 1 : 0; // tb_W[7:4]==0 -> 1 data byte
-				if (tb_W[7:4]) begin
-					count <= count + 1;
+				// if (tb_W[7:4]) begin
+				count <= count + 1;
+				//end
+				
+				if (WLAST) begin
+					WVALID <= 0;
 				end
 			end
 			
@@ -172,9 +176,13 @@ module Master
 					end
 				end
 				
+				if (WLAST) begin
+					WVALID <= 0;
+				end
+				
 				BREADY <= 1;
 				if (BVALID) begin
-					WVALID <= 0;
+					// WVALID <= 0;
 					BOUT <= BRESP;
 				end
 			end
@@ -219,6 +227,6 @@ module Master
 	end
 	
 	always@(posedge clk) begin
-		WLAST = count == tb_W[7:4] ? 1 : 0;
+		WLAST = ((count-1) == {1'b0,tb_W[7:4]}) ? 1 : 0;
 	end
 endmodule
