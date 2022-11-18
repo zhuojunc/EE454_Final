@@ -156,23 +156,25 @@ module Master
 				start <= count * 8;
 				//end = count * 8;
 				WDATA <= INDATA[start +: 8];
-				WLAST <= count == tb_W[7:4] ? 1 : 0; // tb_W[7:4]==0 -> 1 data byte
-				count <= count + 1;
+				// WLAST <= count == tb_W[7:4] ? 1 : 0; // tb_W[7:4]==0 -> 1 data byte
+				if (tb_W[7:4]) begin
+					count <= count + 1;
+				end
 			end
 			
 			3: begin
 				if (WREADY) begin
-					// WDATA <= INDATA;
-					start <= count * 8;
-					//end = count * 8;
-					WDATA <= INDATA[start +: 8];
-					WLAST <= count == tb_W[7:4] ? 1 : 0; // tb_W[7:4]==0 -> 1 data byte
-					count <= count + 1;
+					if (tb_W[7:4]) begin
+						start <= count * 8;
+						WDATA <= INDATA[start +: 8];
+						// WLAST <= count == tb_W[7:4] ? 1 : 0; // tb_W[7:4]==0 -> 1 data byte
+						count <= count + 1;
+					end
 				end
 				
 				BREADY <= 1;
 				if (BVALID) begin
-					// WVALID <= 0;
+					WVALID <= 0;
 					BOUT <= BRESP;
 				end
 			end
@@ -216,4 +218,7 @@ module Master
 		
 	end
 	
+	always@(posedge clk) begin
+		WLAST = count == tb_W[7:4] ? 1 : 0;
+	end
 endmodule
