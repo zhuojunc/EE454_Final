@@ -205,9 +205,9 @@ module Slave
 					if (RREADY) begin
 						count <= count + 1;
 						$display(" ARLEN is %d", ARLEN);
-						if (count == ARLEN)
+						if (count == ARLEN) begin
 							RLAST <= 1;
-						
+						end
 						if (RADDR + count <= 255) begin
 							$display(" The RADDR is %d, and the count is %d", RADDR, count);
 							OUT <= {mem[RADDR+count], 1'b0};
