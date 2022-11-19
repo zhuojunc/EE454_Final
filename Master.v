@@ -210,7 +210,7 @@ module Master
 				if (RVALID) begin
 					RRESP <= IN[0];
 					RDATA <= IN[8:1];
-					$display("RDATA is given the value %d", IN[8:1]);
+					$display("Actual READ data %d starting at ADDR %d", IN[8:1], tb_R[15:8]);
 				end
 			end
 			
@@ -218,7 +218,7 @@ module Master
 				if (RVALID && tb_R[7:4]) begin
 					RRESP <= IN[0];
 					RDATA <= IN[8:1];
-					$display("RDATA is given the value %d", IN[8:1]);
+					$display("Actual READ data %d starting at ADDR %d", IN[8:1], tb_R[15:8]);
 				end	
 			end
 			
