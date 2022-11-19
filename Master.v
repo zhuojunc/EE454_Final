@@ -215,7 +215,7 @@ module Master
 			end
 			
 			3: begin
-				if (RVALID) begin
+				if (RVALID && tb_R[7:4]) begin
 					RRESP <= IN[0];
 					RDATA <= IN[8:1];
 					$display("RDATA is given the value %d", IN[8:1]);
