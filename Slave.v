@@ -92,7 +92,7 @@ module Slave
 			
 				0: begin
 					if (AWVALID) begin
-						$display ("\n Going to next_state 1");
+						// $display ("\n Going to next_state 1");
 
 						next_state_ <= 1;
 					end
@@ -100,7 +100,7 @@ module Slave
 				
 				1: begin
 					if (!AWVALID && WVALID) begin
-						$display ("\n Going to next_state 2");
+						// $display ("\n Going to next_state 2");
 
 						next_state_ <= 2;
 					end
@@ -108,14 +108,14 @@ module Slave
 				
 				2: begin
 					if (WLAST) begin
-						$display ("\n Going to next_state 3");
+						// $display ("\n Going to next_state 3");
 						next_state_ <= 3;
 					end
 				end
 				
 				3: begin
 					if (BREADY) begin
-						$display ("\n Going to next_state 0");
+						// $display ("\n Going to next_state 0");
 
 						next_state_ <= 0;
 					end
@@ -152,7 +152,7 @@ module Slave
 				WREADY <= 1;
 				if (WVALID) begin
 					if (WADDR <= 255) begin
-						$display ("\n Adding data %d to address %d", WDATA, WADDR);
+						$display ("Actual WRITE data %d to ADDR %d", WDATA, WADDR);
 						mem[WADDR] <= WDATA;
 					end
 					else
@@ -162,14 +162,6 @@ module Slave
 			end
 			
 			3: begin
-/* 				if (WVALID) begin
-					if (WADDR <= 255) begin
-						$display ("\n Adding data %d to address %d", WDATA, WADDR);
-						mem[WADDR] <= WDATA;
-					end
-					else
-						RESP <= 1;
-				end */
 				BVALID <= 1;
 				BRESP <= {RESP, BID};
 			end
@@ -203,13 +195,15 @@ module Slave
 				if (WADDR != RADDR) begin
 					RVALID = 1;
 					if (RREADY) begin
-						count <= count + 1;
-						$display(" ARLEN is %d", ARLEN);
-						if (count == ARLEN) begin
+						if (ARLEN) begin
+							count <= count + 1;
+						end
+						// $display(" ARLEN is %d", ARLEN);
+						if (count == ARLEN || !ARLEN) begin
 							RLAST <= 1;
 						end
-						if (RADDR + count <= 255) begin
-							$display(" The RADDR is %d, and the count is %d", RADDR, count);
+						if (RADDR + count <= 255  && !RLAST) begin
+							// $display(" The RADDR is %d, and the count is %d", RADDR, count);
 							OUT <= {mem[RADDR+count], 1'b0};
 						end
 						else
