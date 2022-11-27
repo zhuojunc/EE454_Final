@@ -13,6 +13,8 @@ module Slave
 	input [11:0] AWIN,
 	input [7:0] WDATA,
 	input  BREADY,
+	// delay
+	input [4:0] DELAY,
     output reg ARREADY,
     output reg RVALID,
 	output reg RLAST,
@@ -20,7 +22,10 @@ module Slave
 	output reg AWREADY,
 	output reg WREADY,
 	output reg BVALID,
-	output reg [4:0] BRESP
+	output reg [4:0] BRESP,
+	// READ/WRITE idle
+	output reg RIDLE,
+	output reg WIDLE
 );
 
 	reg [3:0] ARLEN = 4'b0000;
@@ -37,13 +42,16 @@ module Slave
 	reg [2:0] current_state_ = 3'b000;
 	
 	reg [7:0] mem [0:255];
-//	reg [7:0] mem = 0;
+	
+	// delay counter
+	reg [4:0] delay_R = 5'b00000;
+	reg [4:0] delay_W = 5'b00000;
 	
 	integer i;
 	initial begin
 	    for (i = 0; i < 256; i = i + 1) begin
 			mem[i] <= 0;
-		end		
+		end	
 	end
 	
 	
@@ -69,7 +77,14 @@ module Slave
 				
 				2: begin
 					if (count == ARLEN)
+						next_state <= 3;
+				end
+				
+				// state 3 for introducing a delay
+				3: begin
+					if (delay_R == DELAY) begin
 						next_state <= 0;
+					end
 				end
 								
 			
@@ -117,6 +132,13 @@ module Slave
 					if (BREADY) begin
 						// $display ("\n Going to next_state 0");
 
+						next_state_ <= 4;
+					end
+				end
+				
+				// state 4 for introducing a delay
+				4: begin
+					if (delay_W == DELAY) begin
 						next_state_ <= 0;
 					end
 				end
@@ -138,7 +160,13 @@ module Slave
 				BRESP <= 0;
 				RESP = 1'b0;
 				BID = 4'b0000;
-				WADDR = 9'b000000000;					
+				WADDR = 9'b000000000;
+				// WIDLE initially idle, delay_W reset
+				WIDLE <= 1'b1;
+				delay_W <= 0;
+				if (AWVALID) begin
+					WIDLE <= 1'b0;
+				end
 			end
 			
 			1: begin
@@ -165,6 +193,11 @@ module Slave
 				BVALID <= 1;
 				BRESP <= {RESP, BID};
 			end
+			
+			// start counting delay
+			4: begin
+				delay_W <= delay_W + 1;	
+			end
 		
 		endcase
 	end
@@ -180,7 +213,13 @@ module Slave
 				ARLEN = 4'b0000;
 				RADDR = 8'b00000000;
 				OUT <= 0;
-				count <= 0;		
+				count <= 0;
+				// RIDLE initially idle, delay_R reset
+				RIDLE <= 1'b1;
+				delay_R <= 0;
+				if (ARVALID) begin
+					RIDLE <= 1'b0;
+				end				
 			end
 			
 			1: begin
@@ -213,6 +252,11 @@ module Slave
 				else begin
 					RVALID = 0;
 				end
+			end
+			
+			// start counting delay
+			3: begin
+				delay_R <= delay_R + 1;	
 			end
 			
 		endcase
