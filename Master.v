@@ -24,6 +24,9 @@ module Master
 	input  WREADY,
 	input  BVALID,
 	input [4:0] BRESP,
+	// input WIDLE, RIDLE
+	input  WIDLE,
+	input  RIDLE,
     output reg ARVALID,
     output reg RREADY,
 	output reg [15:0] OUT,
