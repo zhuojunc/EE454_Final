@@ -23,11 +23,21 @@ module Slave
 	output reg WREADY,
 	output reg BVALID,
 	output reg [4:0] BRESP,
-	// READ/WRITE idle
+	// READ/WRITE idle in current clk
 	output reg RIDLE,
-	output reg WIDLE
+	output reg WIDLE,
+	// READ/WRITE idle in previous clk
+	output reg RIDLE_prev,
+	output reg WIDLE_prev
 );
 
+
+	// initialize WIDLE, RIDLE, WIDLE_prev, RIDLE_prev
+	WIDLE = 1'b1;
+	RIDLE = 1'b1;
+	WIDLE_prev = 1'b1;
+	RIDLE_prev = 1'b1;
+	
 	reg [3:0] ARLEN = 4'b0000;
 	reg [3:0] count = 4'b0000;
 	reg [3:0] RID = 4'b0000;
@@ -148,6 +158,12 @@ module Slave
 			current_state_ <= next_state_;
 		
 		end
+	end
+	
+	// update WIDLE_prev and RIDLE_prev
+	always@ (posedge clk) begin
+		WIDLE_prev <= WIDLE;
+		RIDLE_prev <= RIDLE;
 	end
 	
 	always@(posedge clk) begin
