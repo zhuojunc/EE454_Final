@@ -27,6 +27,9 @@ module Master
 	// input WIDLE, RIDLE
 	input  WIDLE,
 	input  RIDLE,
+	// input WIDLE_prev, RIDLE_prev
+	input  WIDLE_prev,
+	input  RIDLE_prev,
     output reg ARVALID,
     output reg RREADY,
 	output reg [15:0] OUT,
