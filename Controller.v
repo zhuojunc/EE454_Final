@@ -45,7 +45,7 @@ module Controller
 	input  IO_RIDLE,
 	input  IO_WIDLE_prev,
 	input  IO_RIDLE_prev,	
-	// ALU Master output
+// ALU Master output
     output reg ALU_ARVALID,
     output reg ALU_RREADY,
 	output reg [15:0] ALU_OUT,
@@ -83,7 +83,7 @@ module Controller
 	output reg IO_BREADY,
 	output reg [11:0] IO_AWOUT,
 	output reg [7:0] IO_WDATA,
-	output reg [4:0] IO_BOUT,	
+	output reg [4:0] IO_BOUT
 );	
 	
 	reg ALU_en = 1'b0;
@@ -91,31 +91,40 @@ module Controller
 	reg [127:0] ALU_INDATA = 0;
     reg [15:0] ALU_R = 0;
     reg [15:0] ALU_W = 0;
-	
-	// hardcoded 8 byte data
-    ALU_INDATA[7:0] = 8'b00000001;
-    ALU_INDATA[15:8] = 8'b00000010;
-    ALU_INDATA[23:16] = 8'b00000011;
-	ALU_INDATA[31:24] = 8'b00000100;
 
-	ALU_INDATA[39:32] = 8'b00000001;
-    ALU_INDATA[47:40] = 8'b00000010;
-    ALU_INDATA[55:48] = 8'b00000011;
-	ALU_INDATA[63:56] = 8'b00000100;
-
-    ALU_W[15:8] = 8'b00000001;
-    ALU_W[7:4] = 4'b0111;
-    // ALU_W[3:0] = 4'b0001;	
-
-    ALU_R[15:8] = 8'b00000001;
-    ALU_R[7:4] = 4'b0111;
-    // ALU_R[3:0] = 4'b0001;
-	
-	reg MEM_en = 1'b0;
-	reg MEM_en_ = 1'b0;
-	reg [127:0] MEM_INDATA = 0;
+    reg MEM_en = 1'b0;
+    reg MEM_en_ = 1'b0;
+    reg [127:0] MEM_INDATA = 0;
     reg [15:0] MEM_R = 0;
     reg [15:0] MEM_W = 0;
+
+    reg IO_en = 1'b0;
+    reg IO_en_ = 1'b0;
+    reg [127:0] IO_INDATA = 0;
+    reg [15:0] IO_R = 0;
+    reg [15:0] IO_W = 0;
+
+
+	
+	// hardcoded 8 byte data
+    always@(posedge clk) begin    
+	    ALU_INDATA[7:0] = 8'b00000001;
+	    ALU_INDATA[15:8] = 8'b00000010;
+	    ALU_INDATA[23:16] = 8'b00000011;
+	    ALU_INDATA[31:24] = 8'b00000100;
+
+	    ALU_INDATA[39:32] = 8'b00000001;
+	    ALU_INDATA[47:40] = 8'b00000010;
+	    ALU_INDATA[55:48] = 8'b00000011;
+	    ALU_INDATA[63:56] = 8'b00000100;
+
+	    ALU_W[15:8] = 8'b00000001;
+	    ALU_W[7:4] = 4'b0111;
+	    // ALU_W[3:0] = 4'b0001;	
+
+	    ALU_R[15:8] = 8'b00000001;
+	    ALU_R[7:4] = 4'b0111;
+	    // ALU_R[3:0] = 4'b0001;
 	
 	// hardcoded 8 byte data
     MEM_INDATA[7:0] = 8'b00000001;
@@ -135,13 +144,6 @@ module Controller
     MEM_R[15:8] = 8'b00000001;
     MEM_R[7:4] = 4'b0111;
     // MEM_R[3:0] = 4'b0001;	
-	
-	reg IO_en = 1'b0;
-	reg IO_en_ = 1'b0;
-	reg [127:0] IO_INDATA = 0;
-    reg [15:0] IO_R = 0;
-    reg [15:0] IO_W = 0;
-	
 	// hardcoded 8 byte data
     IO_INDATA[7:0] = 8'b00000001;
     IO_INDATA[15:8] = 8'b00000010;
@@ -160,7 +162,7 @@ module Controller
     IO_R[15:8] = 8'b00000001;
     IO_R[7:4] = 4'b0111;
     // IO_R[3:0] = 4'b0001;	
-	
+    end	
 	Master ALU(.rst(rst), .clk(clk), .en(ALU_en), .en_(ALU_en_), .tb_R(ALU_R), .IN(ALU_IN), .tb_W(ALU_W), .INDATA(ALU_INDATA), 
 	.ARREADY(ALU_ARREADY), .RVALID(ALU_RVALID), .RLAST(ALU_RLAST), .AWREADY(ALU_AWREADY), .WREADY(ALU_WREADY), .BVALID(ALU_BVALID), .BRESP(ALU_BRESP), .WIDLE(ALU_WIDLE), .RIDLE(ALU_RIDLE), .WIDLE_prev(ALU_WIDLE_prev), .RIDLE_prev(ALU_RIDLE_prev),
 	.ARVALID(ALU_ARVALID), .RREADY(ALU_RREADY), .OUT(ALU_OUT), .RRESP(ALU_RRESP), .RDATA(ALU_RDATA), .AWVALID(ALU_AWVALID), .WVALID(ALU_WVALID), .WLAST(ALU_WLAST), .BREADY(ALU_BREADY), .AWOUT(ALU_AWOUT), .WDATA(ALU_WDATA), .BOUT(ALU_BOUT));	
@@ -186,6 +188,8 @@ module Controller
 	reg IO_W_change = 1'b0;
 	reg [15:0] Valid = 1; // store all valid ID bits from the buffer, bit 0 always valid
 	integer i;
+	integer y;
+	integer del_index = 16;
 	
 	initial begin
 	    for (i = 0; i < 16; i = i + 1) begin
@@ -951,7 +955,7 @@ module Controller
 		if (!en) begin
 			if (ALU_R_change) begin
 				ALU_R_change <= 0;
-				integer del_index = 16;
+				del_index = 16;
 				if (buffer[0][0] && buffer[0][3:1] == 3'b010) begin
 					del_index = 0;
 				end
@@ -1016,7 +1020,7 @@ module Controller
 			end
 			else if (ALU_W_change) begin
 				ALU_W_change <= 0;
-				integer del_index = 16;
+				del_index = 16;
 				if (buffer[0][0] && buffer[0][3:1] == 3'b011) begin
 					del_index = 0;
 				end
@@ -1080,7 +1084,7 @@ module Controller
 			end
 			else if (MEM_R_change) begin
 				MEM_R_change <= 0;
-				integer del_index = 16;
+				del_index = 16;
 				if (buffer[0][0] && buffer[0][3:1] == 3'b100) begin
 					del_index = 0;
 				end
@@ -1144,7 +1148,7 @@ module Controller
 			end
 			else if (MEM_W_change) begin
 				MEM_W_change <= 0;
-				integer del_index = 16;
+				del_index = 16;
 				if (buffer[0][0] && buffer[0][3:1] == 3'b101) begin
 					del_index = 0;
 				end
@@ -1208,7 +1212,7 @@ module Controller
 			end
 			else if (IO_R_change) begin
 				IO_R_change <= 0;
-				integer del_index = 16;
+				del_index = 16;
 				if (buffer[0][0] && buffer[0][3:1] == 3'b110) begin
 					del_index = 0;
 				end
@@ -1272,7 +1276,7 @@ module Controller
 			end
 			else if (IO_W_change) begin
 				IO_W_change <= 0;
-				integer del_index = 16;
+				del_index = 16;
 				if (buffer[0][0] && buffer[0][3:1] == 3'b111) begin
 					del_index = 0;
 				end
