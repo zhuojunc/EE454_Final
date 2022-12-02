@@ -13,43 +13,43 @@ module control_tb;
 	wire [4:0] IO_DELAY = 5'b11110;
 	// ALU Master input
 	reg [8:0] ALU_IN;
-	wire  ALU_ARREADY;
-	wire  ALU_RVALID;
-	wire  ALU_RLAST;
-	wire  ALU_AWREADY;
-	wire  ALU_WREADY;
-	wire  ALU_BVALID;
-	wire [4:0] ALU_BRESP;
-	wire  ALU_WIDLE;
-	wire  ALU_RIDLE;
-	wire  ALU_WIDLE_prev;
-	wire  ALU_RIDLE_prev;
+	reg  ALU_ARREADY;
+	reg  ALU_RVALID;
+	reg  ALU_RLAST;
+	reg  ALU_AWREADY;
+	reg  ALU_WREADY;
+	reg  ALU_BVALID;
+	reg [4:0] ALU_BRESP;
+	reg  ALU_WIDLE;
+	reg  ALU_RIDLE;
+	reg  ALU_WIDLE_prev;
+	reg  ALU_RIDLE_prev;
 	// MEM Master input
 	reg [8:0] MEM_IN;
-	wire  MEM_ARREADY;
-	wire  MEM_RVALID;
-	wire  MEM_RLAST;
-	wire  MEM_AWREADY;
-	wire  MEM_WREADY;
-	wire  MEM_BVALID;
-	wire [4:0] MEM_BRESP;
-	wire  MEM_WIDLE;
-	wire  MEM_RIDLE;
-	wire  MEM_WIDLE_prev;
-	wire  MEM_RIDLE_prev;
+	reg  MEM_ARREADY;
+	reg  MEM_RVALID;
+	reg  MEM_RLAST;
+	reg  MEM_AWREADY;
+	reg  MEM_WREADY;
+	reg  MEM_BVALID;
+	reg [4:0] MEM_BRESP;
+	reg  MEM_WIDLE;
+	reg  MEM_RIDLE;
+	reg  MEM_WIDLE_prev;
+	reg  MEM_RIDLE_prev;
 	// I/O Master input
 	reg [8:0] IO_IN;
-	wire  IO_ARREADY;
-	wire  IO_RVALID;
-	wire  IO_RLAST;
-	wire  IO_AWREADY;
-	wire  IO_WREADY;
-	wire  IO_BVALID;
-	wire [4:0] IO_BRESP;
-	wire  IO_WIDLE;
-	wire  IO_RIDLE;
-	wire  IO_WIDLE_prev;
-	wire  IO_RIDLE_prev;
+	reg  IO_ARREADY;
+	reg  IO_RVALID;
+	reg  IO_RLAST;
+	reg  IO_AWREADY;
+	reg  IO_WREADY;
+	reg  IO_BVALID;
+	reg [4:0] IO_BRESP;
+	reg  IO_WIDLE;
+	reg  IO_RIDLE;
+	reg  IO_WIDLE_prev;
+	reg  IO_RIDLE_prev;
 	// ALU Master output
     wire ALU_ARVALID;
     wire ALU_RREADY;
@@ -104,51 +104,22 @@ Controller DUT(.rst(rst), .clk(clk), .en(en), .opcode(opcode),
 .IO_ARVALID(IO_ARVALID), .IO_RREADY(IO_RREADY), .IO_OUT(IO_OUT), .IO_RRESP(IO_RRESP), .IO_RDATA(IO_RDATA), .IO_AWVALID(IO_AWVALID), // I/O Master output
 .IO_WVALID(IO_WVALID), .IO_WLAST(IO_WLAST), .IO_BREADY(IO_BREADY), .IO_AWOUT(IO_AWOUT), .IO_WDATA(IO_WDATA), .IO_BOUT(IO_BOUT));
 
-ALUSlave UUT(.rst(rst), .clk(clk), 
+ALUSlave(.rst(rst), .clk(clk), 
 .ARVALID(ALU_ARVALID), .RREADY(ALU_RREADY), .IN(ALU_OUT), .AWVALID(ALU_AWVALID), .WVALID(ALU_WVALID), // ALU Slave input
 .WLAST(ALU_WLAST), .AWIN(ALU_AWOUT), .WDATA(ALU_WDATA), .BREADY(ALU_BREADY), .DELAY(ALU_DELAY),
 .ARREADY(ALU_ARREADY), .RVALID(ALU_RVALID), .RLAST(ALU_RLAST), .OUT(ALU_IN), .AWREADY(ALU_AWREADY), // ALU Slave output
 .WREADY(ALU_WREADY), .BVALID(ALU_BVALID), .BRESP(ALU_BRESP), .RIDLE(ALU_RIDLE), .WIDLE(ALU_WIDLE), .RIDLE_prev(ALU_RIDLE_prev), .WIDLE_prev(ALU_WIDLE_prev));
 
-MemSlave UUT(.rst(rst), .clk(clk), 
+MemSlave(.rst(rst), .clk(clk), 
 .ARVALID(MEM_ARVALID), .RREADY(MEM_RREADY), .IN(MEM_OUT), .AWVALID(MEM_AWVALID), .WVALID(MEM_WVALID), // MEM Slave input
 .WLAST(MEM_WLAST), .AWIN(MEM_AWOUT), .WDATA(MEM_WDATA), .BREADY(MEM_BREADY), .DELAY(MEM_DELAY),
 .ARREADY(MEM_ARREADY), .RVALID(MEM_RVALID), .RLAST(MEM_RLAST), .OUT(MEM_IN), .AWREADY(MEM_AWREADY), // MEM Slave output
 .WREADY(MEM_WREADY), .BVALID(MEM_BVALID), .BRESP(MEM_BRESP), .RIDLE(MEM_RIDLE), .WIDLE(MEM_WIDLE), .RIDLE_prev(MEM_RIDLE_prev), .WIDLE_prev(MEM_WIDLE_prev));
 
-IOSlave UUT(.rst(rst), .clk(clk), 
+IOSlave(.rst(rst), .clk(clk), 
 .ARVALID(IO_ARVALID), .RREADY(IO_RREADY), .IN(IO_OUT), .AWVALID(IO_AWVALID), .WVALID(IO_WVALID), // I/O Slave input
 .WLAST(IO_WLAST), .AWIN(IO_AWOUT), .WDATA(IO_WDATA), .BREADY(IO_BREADY), .DELAY(IO_DELAY),
 .ARREADY(IO_ARREADY), .RVALID(IO_RVALID), .RLAST(IO_RLAST), .OUT(IO_IN), .AWREADY(IO_AWREADY), // I/O Slave output
 .WREADY(IO_WREADY), .BVALID(IO_BVALID), .BRESP(IO_BRESP), .RIDLE(IO_RIDLE), .WIDLE(IO_WIDLE), .RIDLE_prev(IO_RIDLE_prev), .WIDLE_prev(IO_WIDLE_prev));
 
-
-
-initial
-begin
-	//  initialize everything input to zero
-    rst = 0;
-    clk = 0;
-    en = 0;
-	ALU_IN = 0;
-	MEM_IN = 0;
-	IO_IN = 0;
-
-	rst = 1;
-    #20
-    rst = 0;
-	// opcode[7:4] ID, opcode[3:2] ALU-01, MEM-10, IO-11, opcode[1] R-0, W-1, opcode[0] waiting-0, running-1	
-	
-	// [Write to ALU, ID 4]
-	opcode = 8'b0100011
-	// [Read from Memory, ID 5]*
-	// [Read from Memory, ID 3]
-	// [Write to ALU, ID 3]
-	// [Read from Memory, ID 4]
-	// [Write to IO, ID 4]
-	// [Write to Memory, ID 4]*
-	// [Read from ALU, ID 3]*
-
-
-end
 endmodule
