@@ -12,7 +12,7 @@ module control_tb;
 	wire [4:0] MEM_DELAY = 5'b10100;
 	wire [4:0] IO_DELAY = 5'b11110;
 	// ALU Master input
-	reg [8:0] ALU_IN;
+	wire [8:0] ALU_IN;
 	wire  ALU_ARREADY;
 	wire  ALU_RVALID;
 	wire  ALU_RLAST;
@@ -25,7 +25,7 @@ module control_tb;
 	wire  ALU_WIDLE_prev;
 	wire  ALU_RIDLE_prev;
 	// MEM Master input
-	reg [8:0] MEM_IN;
+	wire [8:0] MEM_IN;
 	wire  MEM_ARREADY;
 	wire  MEM_RVALID;
 	wire  MEM_RLAST;
@@ -38,7 +38,7 @@ module control_tb;
 	wire  MEM_WIDLE_prev;
 	wire  MEM_RIDLE_prev;
 	// I/O Master input
-	reg [8:0] IO_IN;
+	wire [8:0] IO_IN;
 	wire  IO_ARREADY;
 	wire  IO_RVALID;
 	wire  IO_RLAST;
@@ -125,25 +125,57 @@ IOSlave(.rst(rst), .clk(clk),
 
 initial
 begin
+	// setting everything to zero at the beginning
 	rst = 0;
     clk = 0;
     en = 0;
-	ALU_IN = 0;
-	MEM_IN = 0;
-	IO_IN = 0;
+	opcode = 0;
 
 	rst = 1;
     #20
     rst = 0;
+
 	// opcode[7:4] ID, opcode[3:2] ALU-01, MEM-10, IO-11, opcode[1] R-0, W-1, opcode[0] waiting-0, running-1	
 
+	// [Read from ALU, ID 3]*
+	opcode = 8'b00110100;
+	en = 1;
+	#20 
+	en = 0;
+	// [Write to Memory, ID 4]*
+	opcode = 8'b01001010;
+	en = 1;
+	#20 
+	en = 0;
+	// [Write to IO, ID 4]
+	opcode = 8'b01001110;
+	en = 1;
+	#20 
+	en = 0;
+	// [Read from Memory, ID 4]
+	opcode = 8'b01001000;
+	en = 1;
+	#20 
+	en = 0;
+	// [Write to ALU, ID 3]
+	opcode = 8'b00110110;
+	en = 1;
+	#20 
+	en = 0;
+	// [Read from Memory, ID 3]
+	opcode = 8'b00111000;
+	en = 1;
+	#20 
+	en = 0;
+	// [Read from Memory, ID 5]*
+	opcode = 8'b01011000;
+	en = 1;
+	#20 
+	en = 0;
 	// [Write to ALU, ID 4]
 	opcode = 8'b01000110;
-	// [Read from Memory, ID 5]*
-
-	// [Read from Memory, ID 3]
-	
-	// [Write to ALU, ID 3]
-
+	en = 1;
+	#20 
+	en = 0;
 end
 endmodule
