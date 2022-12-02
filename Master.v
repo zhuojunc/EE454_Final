@@ -30,8 +30,8 @@ module Master
 	// input WIDLE_prev, RIDLE_prev
 	input  WIDLE_prev,
 	input  RIDLE_prev,
-	output reg ARVALID,
-	output reg RREADY,
+    output reg ARVALID,
+    output reg RREADY,
 	output reg [15:0] OUT,
 	output reg RRESP,
 	output reg [7:0] RDATA,
@@ -216,7 +216,7 @@ module Master
 				if (RVALID) begin
 					RRESP <= IN[0];
 					RDATA <= IN[8:1];
-					$display("Actual READ data %d starting at ADDR %d", IN[8:1], tb_R[15:8]);
+					// $display("Actual READ data %d starting at ADDR %d", IN[8:1], tb_R[15:8]);
 				end
 			end
 			
@@ -224,7 +224,7 @@ module Master
 				if (RVALID && tb_R[7:4]) begin
 					RRESP <= IN[0];
 					RDATA <= IN[8:1];
-					$display("Actual READ data %d starting at ADDR %d", IN[8:1], tb_R[15:8]);
+					// $display("Actual READ data %d starting at ADDR %d", IN[8:1], tb_R[15:8]);
 				end	
 			end
 			
