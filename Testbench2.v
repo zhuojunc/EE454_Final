@@ -12,44 +12,44 @@ module control_tb;
 	wire [4:0] MEM_DELAY = 5'b10100;
 	wire [4:0] IO_DELAY = 5'b11110;
 	// ALU Master input
-	reg [8:0] ALU_IN;
-	reg  ALU_ARREADY;
-	reg  ALU_RVALID;
-	reg  ALU_RLAST;
-	reg  ALU_AWREADY;
-	reg  ALU_WREADY;
-	reg  ALU_BVALID;
-	reg [4:0] ALU_BRESP;
-	reg  ALU_WIDLE;
-	reg  ALU_RIDLE;
-	reg  ALU_WIDLE_prev;
-	reg  ALU_RIDLE_prev;
+	wire [8:0] ALU_IN;
+	wire  ALU_ARREADY;
+	wire  ALU_RVALID;
+	wire  ALU_RLAST;
+	wire  ALU_AWREADY;
+	wire  ALU_WREADY;
+	wire  ALU_BVALID;
+	wire [4:0] ALU_BRESP;
+	wire  ALU_WIDLE;
+	wire  ALU_RIDLE;
+	wire  ALU_WIDLE_prev;
+	wire  ALU_RIDLE_prev;
 	// MEM Master input
-	reg [8:0] MEM_IN;
-	reg  MEM_ARREADY;
-	reg  MEM_RVALID;
-	reg  MEM_RLAST;
-	reg  MEM_AWREADY;
-	reg  MEM_WREADY;
-	reg  MEM_BVALID;
-	reg [4:0] MEM_BRESP;
-	reg  MEM_WIDLE;
-	reg  MEM_RIDLE;
-	reg  MEM_WIDLE_prev;
-	reg  MEM_RIDLE_prev;
+	wire [8:0] MEM_IN;
+	wire  MEM_ARREADY;
+	wire  MEM_RVALID;
+	wire  MEM_RLAST;
+	wire  MEM_AWREADY;
+	wire  MEM_WREADY;
+	wire  MEM_BVALID;
+	wire [4:0] MEM_BRESP;
+	wire  MEM_WIDLE;
+	wire  MEM_RIDLE;
+	wire  MEM_WIDLE_prev;
+	wire  MEM_RIDLE_prev;
 	// I/O Master input
-	reg [8:0] IO_IN;
-	reg  IO_ARREADY;
-	reg  IO_RVALID;
-	reg  IO_RLAST;
-	reg  IO_AWREADY;
-	reg  IO_WREADY;
-	reg  IO_BVALID;
-	reg [4:0] IO_BRESP;
-	reg  IO_WIDLE;
-	reg  IO_RIDLE;
-	reg  IO_WIDLE_prev;
-	reg  IO_RIDLE_prev;
+	wire [8:0] IO_IN;
+	wire  IO_ARREADY;
+	wire  IO_RVALID;
+	wire  IO_RLAST;
+	wire  IO_AWREADY;
+	wire  IO_WREADY;
+	wire  IO_BVALID;
+	wire [4:0] IO_BRESP;
+	wire  IO_WIDLE;
+	wire  IO_RIDLE;
+	wire  IO_WIDLE_prev;
+	wire  IO_RIDLE_prev;
 	// ALU Master output
     wire ALU_ARVALID;
     wire ALU_RREADY;
@@ -124,3 +124,14 @@ IOSlave UUT(.rst(rst), .clk(clk),
 
 
 
+initial
+begin
+	//  initialize everything input to zero
+    rst = 0;
+    clk = 0;
+    en = 0;
+
+
+
+end
+endmodule
