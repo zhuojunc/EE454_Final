@@ -12,7 +12,7 @@ module control_tb;
 	wire [4:0] MEM_DELAY = 5'b10100;
 	wire [4:0] IO_DELAY = 5'b11110;
 	// ALU Master input
-	wire [8:0] ALU_IN;
+	reg [8:0] ALU_IN;
 	wire  ALU_ARREADY;
 	wire  ALU_RVALID;
 	wire  ALU_RLAST;
@@ -25,7 +25,7 @@ module control_tb;
 	wire  ALU_WIDLE_prev;
 	wire  ALU_RIDLE_prev;
 	// MEM Master input
-	wire [8:0] MEM_IN;
+	reg [8:0] MEM_IN;
 	wire  MEM_ARREADY;
 	wire  MEM_RVALID;
 	wire  MEM_RLAST;
@@ -38,7 +38,7 @@ module control_tb;
 	wire  MEM_WIDLE_prev;
 	wire  MEM_RIDLE_prev;
 	// I/O Master input
-	wire [8:0] IO_IN;
+	reg [8:0] IO_IN;
 	wire  IO_ARREADY;
 	wire  IO_RVALID;
 	wire  IO_RLAST;
@@ -131,6 +131,14 @@ begin
     clk = 0;
     en = 0;
 
+	// [Write to ALU, ID 4]
+	// [Read from Memory, ID 5]*
+	// [Read from Memory, ID 3]
+	// [Write to ALU, ID 3]
+	// [Read from Memory, ID 4]
+	// [Write to IO, ID 4]
+	// [Write to Memory, ID 4]*
+	// [Read from ALU, ID 3]*
 
 
 end
