@@ -30,14 +30,6 @@ module Slave
 	output reg RIDLE_prev,
 	output reg WIDLE_prev
 );
-
-	always@(posedge clk) begin
-	// initialize WIDLE, RIDLE, WIDLE_prev, RIDLE_prev
-		WIDLE = 1'b1;
-		RIDLE = 1'b1;
-		WIDLE_prev = 1'b1;
-		RIDLE_prev = 1'b1;
-	end
 	
 	reg [3:0] ARLEN = 4'b0000;
 	reg [3:0] count = 4'b0000;
@@ -62,7 +54,13 @@ module Slave
 	initial begin
 	    for (i = 0; i < 256; i = i + 1) begin
 			mem[i] <= 0;
-		end	
+		end
+		
+		// initialize WIDLE, RIDLE, WIDLE_prev, RIDLE_prev
+		WIDLE = 1'b1;
+		RIDLE = 1'b1;
+		WIDLE_prev = 1'b1;
+		RIDLE_prev = 1'b1;
 	end
 	
 	
@@ -197,7 +195,7 @@ module Slave
 				WREADY <= 1;
 				if (WVALID) begin
 					if (WADDR <= 255) begin
-						$display ("Actual WRITE data %d to ADDR %d", WDATA, WADDR);
+						// $display ("Actual WRITE data %d to ADDR %d", WDATA, WADDR);
 						mem[WADDR] <= WDATA;
 					end
 					else
