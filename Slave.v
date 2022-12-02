@@ -31,12 +31,13 @@ module Slave
 	output reg WIDLE_prev
 );
 
-
+	always@(posedge clk) begin
 	// initialize WIDLE, RIDLE, WIDLE_prev, RIDLE_prev
-	WIDLE = 1'b1;
-	RIDLE = 1'b1;
-	WIDLE_prev = 1'b1;
-	RIDLE_prev = 1'b1;
+		WIDLE = 1'b1;
+		RIDLE = 1'b1;
+		WIDLE_prev = 1'b1;
+		RIDLE_prev = 1'b1;
+	end
 	
 	reg [3:0] ARLEN = 4'b0000;
 	reg [3:0] count = 4'b0000;
