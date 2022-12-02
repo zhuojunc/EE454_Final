@@ -30,8 +30,8 @@ module Master
 	// input WIDLE_prev, RIDLE_prev
 	input  WIDLE_prev,
 	input  RIDLE_prev,
-    output reg ARVALID,
-    output reg RREADY,
+	output reg ARVALID,
+	output reg RREADY,
 	output reg [15:0] OUT,
 	output reg RRESP,
 	output reg [7:0] RDATA,
